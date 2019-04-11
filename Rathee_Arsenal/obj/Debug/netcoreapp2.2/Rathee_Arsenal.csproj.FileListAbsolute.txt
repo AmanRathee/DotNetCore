@@ -36,5 +36,5 @@ Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Razor\_ViewImports.g
 Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Rathee_Arsenal.RazorTargetAssemblyInfo.cs
 Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Rathee_Arsenal.Views.pdb
 Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Rathee_Arsenal.csproj.CopyComplete
-Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Razor\Shared\_Layout.g.cshtml.cs
-Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Razor\Shared\_ViewStart.g.cshtml.cs
+Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout.g.cshtml.cs
+Z:\GITHUB\DotNetCore\Rathee_Arsenal\obj\Debug\netcoreapp2.2\Razor\_ViewStart.g.cshtml.cs

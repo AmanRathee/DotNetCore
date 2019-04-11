@@ -8,11 +8,18 @@
 @{
     foreach (var weapon in Model.Weapons)
     {
-<div>
-    <h4>Weapon Name : @weapon.Name</h4>
-    <p>Weapon Price : @weapon.Price.ToString("c")</p>
-    <p>Weapon Category : @weapon.Category.CategoryName</p>
-    <p>Weapon Stock : @weapon.InStock</p>
-</div>
+       
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="thumbnail" >
+                <img src=@weapon.ImageUrl class="img-responsive" style="max-height:100px;"/>
+                <div class="caption">
+                    <h3 class="pull-right"> @weapon.Price.ToString("c")</h3>
+                    <h3><a>@weapon.Name</a></h3>
+                    @*<p>@weapon.Category.CategoryName</p>
+                    <p>@weapon.InStock</p>*@
+                </div>
+            </div>
+            
+        </div>
     }
 }
