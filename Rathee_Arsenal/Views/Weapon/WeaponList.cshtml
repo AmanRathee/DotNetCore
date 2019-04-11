@@ -1,0 +1,18 @@
+﻿@model WeaponListVM
+<div>
+    <h2>
+        @ViewBag.Heading
+    </h2>
+</div>
+
+@{
+    foreach (var weapon in Model.Weapons)
+    {
+<div>
+    <h4>Weapon Name : @weapon.Name</h4>
+    <p>Weapon Price : @weapon.Price.ToString("c")</p>
+    <p>Weapon Category : @weapon.Category.CategoryName</p>
+    <p>Weapon Stock : @weapon.InStock</p>
+</div>
+    }
+}
