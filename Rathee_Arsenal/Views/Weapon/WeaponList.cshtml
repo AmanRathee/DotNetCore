@@ -1,25 +1,29 @@
 ﻿@model WeaponListVM
 <div>
     <h2>
-        @ViewBag.Heading
+        <u>
+            @ViewBag.Heading
+            <hr />
+        </u>
     </h2>
 </div>
 
 @{
-    foreach (var weapon in Model.Weapons)
-    {
-       
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail" >
-                <img src=@weapon.ImageUrl class="img-responsive" style="max-height:100px;"/>
-                <div class="caption">
-                    <h3 class="pull-right"> @weapon.Price.ToString("c")</h3>
-                    <h3><a>@weapon.Name</a></h3>
-                    @*<p>@weapon.Category.CategoryName</p>
-                    <p>@weapon.InStock</p>*@
+    <div class="row">
+
+        @foreach (var weapon in Model.Weapons)
+        {
+        <div>
+            <div class="card" style="width: 22rem;border-color:lightsalmon;height:20rem">
+                <img src=@weapon.ImageUrl class="card-img-top" style="max-height:200px;"/>
+                <div class="card-body">
+                    <h6 class="float-right"> @weapon.Price.ToString("c")</h6>
+                    <a href="#" class="card-title">@weapon.Name</a>
+                    <p class="card-text">@weapon.Description</p>
                 </div>
             </div>
-            
         </div>
-    }
+        }
+    </div>
+
 }
