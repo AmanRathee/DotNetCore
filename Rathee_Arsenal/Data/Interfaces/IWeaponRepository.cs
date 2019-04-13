@@ -8,8 +8,8 @@ namespace Rathee_Arsenal.Data
 {
     public interface IWeaponRepository
     {
-        IEnumerable<Weapon> GetAllWeapons { get; set; }
-        IEnumerable<Weapon> GetAllTrendingWeapons { get; set; }
+        IEnumerable<Weapon> GetAllWeapons { get;  }
+        IEnumerable<Weapon> GetAllTrendingWeapons { get;  }
         Weapon GetWeaponById(int weaponId);
 
     }

@@ -11,17 +11,10 @@
 @{
     <div class="row">
 
-        @foreach (var weapon in Model.Weapons)
+        @foreach (Weapon weapon in Model.Weapons)
         {
         <div>
-            <div class="card" style="width: 22rem;border-color:lightsalmon;height:20rem">
-                <img src=@weapon.ImageUrl class="card-img-top" style="max-height:200px;"/>
-                <div class="card-body">
-                    <h6 class="float-right"> @weapon.Price.ToString("c")</h6>
-                    <a href="#" class="card-title">@weapon.Name</a>
-                    <p class="card-text">@weapon.Description</p>
-                </div>
-            </div>
+           @Html.Partial("WeaponSummary",weapon)
         </div>
         }
     </div>
