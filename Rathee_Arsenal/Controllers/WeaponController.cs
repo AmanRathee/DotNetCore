@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Rathee_Arsenal.Data;
+using Rathee_Arsenal.Model;
 using Rathee_Arsenal.ViewModels;
 
 namespace Rathee_Arsenal.Controllers
@@ -15,17 +16,37 @@ namespace Rathee_Arsenal.Controllers
 
         public WeaponController(ICategoryRepository categoryRepo,IWeaponRepository weaponRepo)
         {
+            ViewBag.Heading = "Big Boy Toys!!!";
+
             _categoryRepo = categoryRepo;
             _weaponRepo = weaponRepo;
         }
 
-        public ViewResult WeaponList()
+        public ViewResult WeaponList(string category)
         {
-            ViewBag.Heading = "Big Boy Toys!!!";
-            var weapons = _weaponRepo.GetAllWeapons;
-            WeaponListVM weaponListVm = new WeaponListVM();
-            weaponListVm.Weapons= _weaponRepo.GetAllWeapons; ;
-            weaponListVm.CurrentCategory = _categoryRepo.Categories.First().CategoryName;
+            IEnumerable<Weapon> weapons;
+            string currentCategory;
+            if (string.IsNullOrEmpty(category))
+            {
+                weapons = _weaponRepo.GetAllWeapons.OrderBy(p => p.WeaponId);
+                currentCategory = "ALL";
+            }
+            else
+            {
+                var matchingCategoryWeapons = _categoryRepo.Categories.FirstOrDefault(x => x.CategoryName.Equals(category, StringComparison.OrdinalIgnoreCase));
+                if (matchingCategoryWeapons!=null)
+                {
+                    weapons = _weaponRepo.GetAllWeapons.Where(x=>x.Category.CategoryId== matchingCategoryWeapons.CategoryId);
+                    currentCategory = category;
+                }
+                else
+                {
+                    weapons = _weaponRepo.GetAllWeapons.OrderBy(p => p.WeaponId);
+                    currentCategory = "ALL";
+                }
+            }
+
+            WeaponListVM weaponListVm = new WeaponListVM() { Weapons=weapons,CurrentCategory= currentCategory };
             return View(weaponListVm);
         }
     }

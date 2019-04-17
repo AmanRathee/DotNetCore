@@ -1,10 +1,17 @@
 ﻿@model Weapon
 
-<div class="card" style="width: 22rem;border-color:lightsalmon;height:20rem">
-    <img src=@Model.ImageUrl class="card-img-top" style="max-height:200px;" />
+<div class="card" style="width: 22rem;border-color:lightsalmon;height:25rem">
+    <img src=@Model.ImageUrl class="card-img-top" style="max-height:200px;padding-top:2em" />
     <div class="card-body">
         <h6 class="float-right"> @Model.Price.ToString("c")</h6>
         <a href="#" class="card-title">@Model.Name</a>
         <p class="card-text">@Model.Description</p>
     </div>
+    <div class="btn text-right">
+        <p class="button ">
+            <a class="btn btn-success" id="cartButton" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" asp-route-weaponId="@Model.WeaponId">Add to cart</a>
+        </p>
+    </div>
+
+    @**@
 </div>

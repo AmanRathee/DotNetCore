@@ -19,6 +19,54 @@ namespace Rathee_Arsenal.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Rathee_Arsenal.Data.Model.Order", b =>
+                {
+                    b.Property<int>("OrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .IsRequired();
+
+                    b.Property<string>("BuyerName")
+                        .IsRequired()
+                        .HasMaxLength(25);
+
+                    b.Property<string>("Email")
+                        .IsRequired();
+
+                    b.Property<DateTime>("OrderPlacedAt");
+
+                    b.Property<decimal>("OrderTotal");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Rathee_Arsenal.Data.Model.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Amount");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<decimal>("Price");
+
+                    b.Property<int>("WeaponId");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("WeaponId");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("Rathee_Arsenal.Data.Model.ShoppingCartItem", b =>
                 {
                     b.Property<int>("ShoppingCartItemId")
@@ -78,6 +126,19 @@ namespace Rathee_Arsenal.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Weapons");
+                });
+
+            modelBuilder.Entity("Rathee_Arsenal.Data.Model.OrderDetail", b =>
+                {
+                    b.HasOne("Rathee_Arsenal.Data.Model.Order", "Order")
+                        .WithMany("Orderdetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Rathee_Arsenal.Model.Weapon", "Weapon")
+                        .WithMany()
+                        .HasForeignKey("WeaponId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Rathee_Arsenal.Data.Model.ShoppingCartItem", b =>

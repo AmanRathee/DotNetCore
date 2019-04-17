@@ -1,0 +1,44 @@
+﻿@model Order
+
+<h3 class="">You are just one step away from ordering your weapons.</h3>
+
+<div class="row orderForm ">
+    
+    <div asp-validation-summary="All"></div>
+    <form asp-action="Checkout" method="post" class="form-horizontal" role="form">
+
+        <div class="form-group">
+            <label asp-for="BuyerName" class="col-md-2 control-label"></label>
+            <div class="col-md-12">
+                <input asp-for="BuyerName" class="form-control" />
+                <span asp-validation-for="BuyerName" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Address" class="col-md-2 control-label"></label>
+            <div class="col-md-12">
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="col-md-12">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="btn-group col-md-offset-2 col-md-8">
+                <input class="btn btn-success" type="submit" value="Complete order" />
+                @*<input class="btn btn-default" type="submit" value="Return " />*@
+            </div>
+        </div>
+
+    </form>
+</div>

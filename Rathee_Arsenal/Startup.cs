@@ -32,6 +32,7 @@ namespace Rathee_Arsenal
         {
             services.AddTransient<IWeaponRepository, WeaponRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
 
 
             services.AddDbContext<AppDbContext>(options =>
@@ -58,12 +59,13 @@ namespace Rathee_Arsenal
             app.UseStaticFiles();
 
             app.UseSession();
-            //app.UseMVC(routes=>
-            //{
-            //     routes.MapRoute("default","{controller=Home}/{action=index}/{id?}");
-            //}
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(name: "categoryFilter", template: "Weapon/{action}/{category?}",defaults:new { Controller="Weapon",action="Weaponlist"});
+                routes.MapRoute(name:"default",template: "{controller=Home}/{action=Index}/{id?}");
+            });
             //Below is same as above
-            app.UseMvcWithDefaultRoute();
+            //app.UseMvcWithDefaultRoute();
 
 
             app.Run(async (context) =>

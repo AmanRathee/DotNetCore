@@ -1,0 +1,17 @@
+﻿@model HomeVM
+<script>
+    $('.carousel').carousel({
+        interval: 1000
+    })
+</script>
+
+@await Html.PartialAsync("Carousel")
+
+<h4>Trending Weapons of the week</h4>
+
+<div class="row">
+    @foreach (var weapon in Model.TrendingWeapon)
+    {
+        @Html.Partial("WeaponSummary", weapon)
+    }
+</div>
