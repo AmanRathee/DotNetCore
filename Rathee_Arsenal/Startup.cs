@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Rathee_Arsenal.Data;
 using Rathee_Arsenal.Data.Mock;
 using Rathee_Arsenal.Data.Model;
@@ -17,7 +20,7 @@ namespace Rathee_Arsenal
 {
     public class Startup
     {
-        private IConfigurationRoot _configurationRoot;
+        private readonly IConfigurationRoot _configurationRoot;
         public Startup(IHostingEnvironment hostingEnvironment)
         {
             _configurationRoot = new ConfigurationBuilder().SetBasePath(hostingEnvironment.ContentRootPath)
@@ -30,6 +33,7 @@ namespace Rathee_Arsenal
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+           
             services.AddTransient<IWeaponRepository, WeaponRepository>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
@@ -42,6 +46,20 @@ namespace Rathee_Arsenal
             services.AddScoped(sp=>ShoppingCart.GetCart(sp));
 
             services.AddMvc();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = _configurationRoot["Jwt:Issuer"],
+                        ValidAudience = _configurationRoot["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configurationRoot["Jwt:Key"]))
+                    };
+                });
             services.AddMemoryCache();
             services.AddSession();
 
@@ -57,8 +75,10 @@ namespace Rathee_Arsenal
 
 
             app.UseStaticFiles();
-
             app.UseSession();
+
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "categoryFilter", template: "Weapon/{action}/{category?}",defaults:new { Controller="Weapon",action="Weaponlist"});

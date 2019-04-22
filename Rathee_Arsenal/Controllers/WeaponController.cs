@@ -11,8 +11,8 @@ namespace Rathee_Arsenal.Controllers
 {
     public class WeaponController : Controller
     {
-        private ICategoryRepository _categoryRepo;
-        private IWeaponRepository _weaponRepo;
+        private readonly ICategoryRepository _categoryRepo;
+        private readonly IWeaponRepository _weaponRepo;
 
         public WeaponController(ICategoryRepository categoryRepo,IWeaponRepository weaponRepo)
         {

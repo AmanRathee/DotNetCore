@@ -27,5 +27,8 @@ namespace Rathee_Arsenal.Data.Model
 
         public decimal OrderTotal { get; set; }
         public DateTime OrderPlacedAt { get; set; }
+        [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password is a required field.")]
+        public string Password { get; set; }
     }
 }

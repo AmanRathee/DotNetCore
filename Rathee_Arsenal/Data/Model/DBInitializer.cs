@@ -19,6 +19,15 @@ namespace Rathee_Arsenal.Data.Model
                 {
                     context.Categories.AddRange(Categories.Select(c => c.Value));
                 }
+                if (!context.Users.Any())
+                {
+                    context.Users.AddRange(
+                        new User() { Email = "abc@xyz",Password = "123456",BuyerName = "XYZ",CreationDateTime = DateTime.Now,Address = "gfhg",UserUid = Guid.NewGuid()},
+                    new User() { Email = "pqr@xyz", Password = "aaaaaa", BuyerName = "PQR", CreationDateTime = DateTime.Now, Address = "gfhg", UserUid = Guid.NewGuid() }
+
+                        );
+
+                }
                 if (!context.Weapons.Any())
                 {
                     context.AddRange(
