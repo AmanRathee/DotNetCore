@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ using Rathee_Arsenal.Data;
 using Rathee_Arsenal.Data.Mock;
 using Rathee_Arsenal.Data.Model;
 using Rathee_Arsenal.Data.Repository;
+using Rathee_Arsenal.Security;
 
 namespace Rathee_Arsenal
 {
@@ -38,6 +40,48 @@ namespace Rathee_Arsenal
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
 
+            var key = Encoding.ASCII.GetBytes(_configurationRoot["Jwt:Key"]);
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+
+
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidateAudience = true,
+            //            ValidateLifetime = true,
+            //            ValidateIssuerSigningKey = true,
+            //            ValidIssuer = _configurationRoot["Jwt:Issuer"],
+            //            ValidAudience = _configurationRoot["Jwt:Issuer"],
+            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configurationRoot["Jwt:Key"]))
+            //        };
+            //    });
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(options =>
+            //    {
+            //        options.LoginPath= "/Login/UserLogin/";
+            //        options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+
+            //    });
 
             services.AddDbContext<AppDbContext>(options =>
                options.UseSqlServer(_configurationRoot.GetConnectionString("DefaultConnection")));
@@ -46,20 +90,8 @@ namespace Rathee_Arsenal
             services.AddScoped(sp=>ShoppingCart.GetCart(sp));
 
             services.AddMvc();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = _configurationRoot["Jwt:Issuer"],
-                        ValidAudience = _configurationRoot["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configurationRoot["Jwt:Key"]))
-                    };
-                });
+            
+
             services.AddMemoryCache();
             services.AddSession();
 
@@ -77,6 +109,8 @@ namespace Rathee_Arsenal
             app.UseStaticFiles();
             app.UseSession();
 
+            app.UseAuthentication();
+         
             app.UseAuthentication();
 
             app.UseMvc(routes =>
