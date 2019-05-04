@@ -76,7 +76,8 @@ namespace Rathee_Arsenal.Controllers
                 try
                 {
                     identity = (ClaimsIdentity)principal.Identity;
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
+                   HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
+                  //  HttpContext.SignInAsync(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme, principal);
 
                     //var SignInResult =SignIn(principal, CookieAuthenticationDefaults.AuthenticationScheme);
                 }
@@ -104,55 +105,7 @@ namespace Rathee_Arsenal.Controllers
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])) // The same key as the one that generate the token
             };
         }
-        //public string ValidateToken(string token)
-        //{
-        //    string username = null;
-        //    ClaimsPrincipal principal = GetPrincipal(token);
-        //    if (principal == null)
-        //        return null;
-        //    ClaimsIdentity identity = null;
-        //    try
-        //    {
-        //        identity = (ClaimsIdentity)principal.Identity;
-        //    }
-        //    catch (NullReferenceException)
-        //    {
-        //        return null;
-        //    }
-        //    Claim usernameClaim = identity.FindFirst(ClaimTypes.Email);
-        //    username = usernameClaim.Value;
-        //    return username;
-        //}
-        public ClaimsPrincipal GetPrincipal(string token)
-        {
-            try
-            {
-                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-                JwtSecurityToken jwtToken = (JwtSecurityToken)tokenHandler.ReadToken(token);
-                if (jwtToken == null)
-                    return null;
-                var jti = jwtToken.Claims.First(claim => claim.Type == "email").Value;
-                byte[] key = Convert.FromBase64String(_config["Jwt:Key"]);
-                TokenValidationParameters parameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = _config["Jwt:Issuer"],
-                    ValidAudience = _config["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]))
-                };
-                SecurityToken securityToken;
-                ClaimsPrincipal principal = tokenHandler.ValidateToken(token,
-                    parameters, out securityToken);
-                return principal;
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
+       
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public IActionResult CheckoutComplete()
         {
@@ -173,7 +126,7 @@ namespace Rathee_Arsenal.Controllers
             {
                 //client.BaseAddress = new Uri("http://localhost:62305/api/");
                 //HTTP GET
-                var result = await client.PostAsJsonAsync("http://localhost:62305/api/mytoken5", loginVm);
+                var result = await client.PostAsJsonAsync("http://localhost:62305/api/token", loginVm);
                 if (result.IsSuccessStatusCode)
                 {
                     return await result.Content.ReadAsStringAsync();

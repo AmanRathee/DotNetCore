@@ -43,7 +43,7 @@ namespace AuthenticationAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/mytoken5")]
+        [Route("api/token")]
         public string Login([FromBody]LoginVM login)
         {
             string response = null;
@@ -78,67 +78,6 @@ namespace AuthenticationAPI.Controllers
                 expires: DateTime.UtcNow.AddDays(1));
             var handler = new JwtSecurityTokenHandler();
             return handler.WriteToken(secToken);
-
-            //var tokenHandler = new JwtSecurityTokenHandler();
-            //var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
-            //var tokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity( new[] {
-            //            new Claim(JwtRegisteredClaimNames.Email, authenticatedUser.Email),
-            //            new Claim(JwtRegisteredClaimNames.GivenName, authenticatedUser.BuyerName),
-            //            new Claim("DateOfJoining", authenticatedUser.CreationDateTime.ToString("yyyy-MM-dd")),
-            //            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            //    }),
-            //    Expires = DateTime.UtcNow.AddDays(7),
-            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            //};
-            //var token = tokenHandler.CreateToken(tokenDescriptor);
-            //return tokenHandler.WriteToken(token);
-
-
-
-            //byte[] key = Convert.FromBase64String(_config["Jwt:Key"]);
-            //SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key);
-            //SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity(new[] {
-            //        new Claim(JwtRegisteredClaimNames.Email, authenticatedUser.Email),
-            //           new Claim(JwtRegisteredClaimNames.GivenName, authenticatedUser.BuyerName),
-            //           new Claim("DateOfJoining", authenticatedUser.CreationDateTime.ToString("yyyy-MM-dd")),
-            //           new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())}),
-            //    Expires = DateTime.UtcNow.AddMinutes(30),
-            //    SigningCredentials = new SigningCredentials(securityKey,
-            //        SecurityAlgorithms.HmacSha256Signature)
-            //};
-
-            //JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            //JwtSecurityToken token = handler.CreateJwtSecurityToken(descriptor);
-            //return handler.WriteToken(token);
-
-
-
-            ////var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"] + authenticatedUser.Email));
-            //// byte[] byt = System.Text.Encoding.UTF8.GetBytes(_config["Jwt:Key"] + authenticatedUser.Email);
-            //var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_config["Jwt:Key"] + authenticatedUser.Email));
-
-            //var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            //var claims = new[] {
-            //    new Claim(JwtRegisteredClaimNames.Email, authenticatedUser.Email),
-            //    new Claim(JwtRegisteredClaimNames.GivenName, authenticatedUser.BuyerName),
-            //    new Claim("DateOfJoining", authenticatedUser.CreationDateTime.ToString("yyyy-MM-dd")),
-            //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            //};
-
-            //var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-            //    _config["Jwt:Issuer"],
-            //    claims,
-            //    expires: DateTime.Now.AddMinutes(120),
-            //    signingCredentials: credentials);
-
-            ////await HttpContext.Response.WriteAsync(JsonConvert.SerializeObject(token,
-            ////    new JsonSerializerSettings { Formatting = Formatting.Indented }));
-            //return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private User AuthenticatedUser(LoginVM login)
