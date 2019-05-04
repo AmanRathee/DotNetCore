@@ -28,7 +28,7 @@ namespace Rathee_Arsenal.Controllers
         private readonly IConfiguration _config;
         private readonly AppDbContext _appDbContext;
 
-       
+
         public OrderController(IConfiguration config, AppDbContext appDbContext, IOrderRepository orderRepository, ShoppingCart shoppingCart)
         {
             _config = config;
@@ -76,10 +76,14 @@ namespace Rathee_Arsenal.Controllers
                 try
                 {
                     identity = (ClaimsIdentity)principal.Identity;
-                   HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,principal);
-                  //  HttpContext.SignInAsync(Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme, principal);
 
-                    //var SignInResult =SignIn(principal, CookieAuthenticationDefaults.AuthenticationScheme);
+                    //ispersistent is necessary so that the expiry time of the cookie gets set.
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal
+                        , new AuthenticationProperties()
+                        {
+                            IsPersistent = true
+                        });
+
                 }
                 catch (NullReferenceException)
                 {
@@ -97,15 +101,16 @@ namespace Rathee_Arsenal.Controllers
         {
             return new TokenValidationParameters()
             {
-                ValidateLifetime = false, // Because there is no expiration in the generated token
+                ValidateLifetime = true, // Because there is no expiration in the generated token
                 ValidateAudience = false, // Because there is no audiance in the generated token
                 ValidateIssuer = false,   // Because there is no issuer in the generated token
                 ValidIssuer = "Sample",
                 ValidAudience = "Sample",
+
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"])) // The same key as the one that generate the token
             };
         }
-       
+
         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public IActionResult CheckoutComplete()
         {

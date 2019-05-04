@@ -46,7 +46,14 @@ namespace Rathee_Arsenal
                     x.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     x.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 })
-                .AddCookie(cfg => cfg.SlidingExpiration = true)
+                .AddCookie(cfg =>
+                {
+                    cfg.SlidingExpiration = false;
+                    cfg.Cookie.Name = "MyCookie";
+                    cfg.LoginPath = "/abc";
+                    cfg.LogoutPath = "/pqr";
+                    cfg.ExpireTimeSpan= TimeSpan.FromMinutes(2);
+                })
                 .AddJwtBearer(x =>
                 {
                     x.RequireHttpsMetadata = false;

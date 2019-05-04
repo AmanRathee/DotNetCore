@@ -52,13 +52,13 @@ namespace Rathee_Arsenal.Controllers
                 var authenticatedUser = AuthenticatedUser(login);
                 if (authenticatedUser != null)
                 {
-                    response = GenerateJsonWebToken(authenticatedUser).Result;
+                    response = GenerateJsonWebToken(authenticatedUser);
                 }
             }
 
             return response;
         }
-        private async Task<string> GenerateJsonWebToken(User authenticatedUser)
+        private string GenerateJsonWebToken(User authenticatedUser)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"] + authenticatedUser.Email));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -73,7 +73,7 @@ namespace Rathee_Arsenal.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.Now.AddMinutes(2),
                 signingCredentials: credentials);
 
             //await HttpContext.Response.WriteAsync(JsonConvert.SerializeObject(token,
