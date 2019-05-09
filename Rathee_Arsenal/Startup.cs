@@ -118,7 +118,6 @@ namespace Rathee_Arsenal
 
             app.UseAuthentication();
          
-            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

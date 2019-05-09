@@ -58,6 +58,36 @@ namespace AuthenticationAPI.Controllers
 
             return response;
         }
+
+        [AllowAnonymous]
+        public async Task<bool> CreateUser([FromBody]User user)
+        {
+            _appDbContext.Users.Add(user);
+            await _appDbContext.SaveChangesAsync();
+            return true;
+        }
+        [AllowAnonymous]
+        public async Task<User> GetUserAsync(Guid userUid)
+        {
+            return await _appDbContext.Users.FindAsync(userUid);
+        }
+        [Authorize]
+        public async Task<bool> UpdateUser([FromBody]User user)
+        {
+            var userFromDB=await _appDbContext.Users.FindAsync(user.UserUid);
+            userFromDB = user;
+            await _appDbContext.SaveChangesAsync();
+            return true;
+        }
+        [Authorize]
+        public async Task<bool> DeleteUserAsync(Guid userUid)
+        {
+            var userFromDB = await _appDbContext.Users.FindAsync(userUid);
+            _appDbContext.Users.Remove(userFromDB);
+            return true;
+        }
+
+        #region Private Methods
         private string GenerateJsonWebToken(User authenticatedUser)
         {
             var key = _config["Jwt:Key"];
@@ -75,7 +105,7 @@ namespace AuthenticationAPI.Controllers
                                 new Claim("DateOfJoining", authenticatedUser.CreationDateTime.ToString("yyyy-MM-dd")),
                                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                         },
-                expires: DateTime.UtcNow.AddDays(1));
+                expires: DateTime.UtcNow.AddMinutes(1));
             var handler = new JwtSecurityTokenHandler();
             return handler.WriteToken(secToken);
         }
@@ -85,5 +115,7 @@ namespace AuthenticationAPI.Controllers
             return _appDbContext.Users.FirstOrDefault(x =>
                 x.Email.Equals(login.UserName) && x.Password.Equals(login.Password));
         }
+        #endregion
+
     }
 }
