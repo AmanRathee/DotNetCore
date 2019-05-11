@@ -9,7 +9,7 @@ namespace Rathee_Arsenal.Data
 {
     public interface IOrderRepository
     {
-        void CreateOrder(OrderVM order);
+        Task CreateOrderAsync(OrderVM order);
 
     }
 }

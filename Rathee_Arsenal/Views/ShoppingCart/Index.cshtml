@@ -24,7 +24,7 @@
                     <td class="text-right">
                         @((line.Number * line.Weapon.Price).ToString("c"))
                     </td>
-                    <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-drinkId="@line.Weapon.WeaponId"></a></td>
+                    <td class="text-center"><a class="glyphicon glyphicon-remove text-danger remove" asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-weaponId="@line.Weapon.WeaponId"></a></td>
                 </tr>
             }
         </tbody>
@@ -41,15 +41,17 @@
     <div class="text-right">
         <div class="btn-group ">
             <a class="btn btn-success" asp-controller="Order" asp-action="Checkout">Check out</a>
-            <a class="btn-group">
+            <div class="btn-group">
                 <a class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    Add more drinks<span class="caret"></span>
+                    Add more weapons<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a asp-controller="Drink" asp-action="List" asp-route-category="Alcoholic">Alcoholic</a></li>
-                    <li><a asp-controller="Drink" asp-action="List" asp-route-category="Non-alcoholic">Non Alcoholic</a></li>
+                    <li><a asp-controller="Weapon" asp-action="WeaponList" asp-route-category="ALL">All</a></li>
+                    <li><a asp-controller="Weapon" asp-action="WeaponList" asp-route-category="Pistol">Pistol</a></li>
+                    <li><a asp-controller="Weapon" asp-action="WeaponList" asp-route-category="ShotGun">Shotgun</a></li>
+
                 </ul>
-            </a>
+            </div>
         </div>
     </div>
 </div>

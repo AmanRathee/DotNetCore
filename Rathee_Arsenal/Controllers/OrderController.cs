@@ -63,8 +63,8 @@ namespace Rathee_Arsenal.Controllers
                     {
                         var token = GetToken(orderVM.Email, orderVM.Password).Result;
                         ValidateToken(token);
-                        _orderRepository.CreateOrder(orderVM);
-                        _shoppingCart.ClearCart();
+                        await _orderRepository.CreateOrderAsync(orderVM);
+                        await _shoppingCart.ClearCartAsync();
                         return RedirectToAction("CheckoutComplete");
                     }                   
                 }                

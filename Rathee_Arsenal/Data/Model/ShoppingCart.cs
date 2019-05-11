@@ -79,11 +79,11 @@ namespace Rathee_Arsenal.Data.Model
                 (ShoppingCartItems = _appDbContext.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId)
                                                                   .Include(s => s.Weapon).ToList());
         }
-        public void ClearCart()
+        public async Task ClearCartAsync()
         {
             var cartItems = _appDbContext.ShoppingCartItems.Where(c => c.ShoppingCartId == ShoppingCartId);
             _appDbContext.ShoppingCartItems.RemoveRange(cartItems);
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
         }
         public decimal GetShoppingCartTotal()
         {

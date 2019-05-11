@@ -26,9 +26,10 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a>
                 </li>
-                <li class="nav-item">
+                @*<li class="nav-item">
                     <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
+                </li>*@
+
                 @await Component.InvokeAsync("ShoppingCartSummary")
 
             </ul>
@@ -47,7 +48,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Drink&Go</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Weapons</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">

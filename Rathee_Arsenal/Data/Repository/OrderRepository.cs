@@ -19,7 +19,7 @@ namespace Rathee_Arsenal.Data.Repository
             _shoppingCart = shoppingCart;
         }
 
-        public void CreateOrder(OrderVM order)
+        public async Task CreateOrderAsync(OrderVM order)
         {
             order.OrderPlacedAt = DateTime.Now;
             var useruid = Guid.NewGuid();
@@ -54,9 +54,7 @@ namespace Rathee_Arsenal.Data.Repository
                     Orderdetails = orderDetails,
                     UserUid = useruid
                 });
-            _appDbContext.SaveChangesAsync();
-
-           
+           await _appDbContext.SaveChangesAsync();           
         }
     }
 }
