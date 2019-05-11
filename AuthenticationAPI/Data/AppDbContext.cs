@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AuthenticationAPI.Data.Model;
-using AuthenticationAPI.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +13,11 @@ namespace AuthenticationAPI.Data
         {
                 
         }
-        public DbSet<Weapon> Weapons { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
+        //public DbSet<Weapon> Weapons { get; set; }
+        //public DbSet<Category> Categories { get; set; }
+        //public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        //public DbSet<Order> Orders { get; set; }
+        //public DbSet<OrderDetail> OrderDetails { get; set; }
 
         public DbSet<User> Users { get; set; }
 

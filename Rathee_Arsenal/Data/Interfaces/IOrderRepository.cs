@@ -9,7 +9,7 @@ namespace Rathee_Arsenal.Data
 {
     public interface IOrderRepository
     {
-        void CreateOrder(Order order);
+        void CreateOrder(OrderVM order);
 
     }
 }

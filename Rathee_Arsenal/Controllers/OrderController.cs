@@ -43,7 +43,7 @@ namespace Rathee_Arsenal.Controllers
         }
 
         [HttpPost]
-        public IActionResult Checkout(Order order)
+        public async Task<IActionResult> Checkout(OrderVM orderVM)
         {
             _shoppingCart.ShoppingCartItems = _shoppingCart.GetShoppingCartItems();
             if (!_shoppingCart.ShoppingCartItems.Any())
@@ -53,14 +53,45 @@ namespace Rathee_Arsenal.Controllers
 
             if (ModelState.IsValid)
             {
-                var token = GetToken(order).Result;
-                ValidateToken(token);
-                _orderRepository.CreateOrder(order);
-                _shoppingCart.ClearCart();
-                return RedirectToAction("CheckoutComplete");
+                if (User.Identity.IsAuthenticated)
+                {
+
+                }
+                else
+                {
+                    if (await CreateUser(orderVM))
+                    {
+                        var token = GetToken(orderVM.Email, orderVM.Password).Result;
+                        ValidateToken(token);
+                        _orderRepository.CreateOrder(orderVM);
+                        _shoppingCart.ClearCart();
+                        return RedirectToAction("CheckoutComplete");
+                    }                   
+                }                
             }
-            return View(order);
+            return View(orderVM);
         }
+
+        private async Task<bool> CreateUser(OrderVM orderVM)
+        {
+            Data.Model.User user = new User()
+            {
+                BuyerName = orderVM.BuyerName,
+                Email=orderVM.Email,
+                Password= orderVM.Password,
+                Address=orderVM.Address
+            };
+            using (var client = new HttpClient())
+            {
+                var result = await client.PostAsJsonAsync("http://localhost:62305/api/create", user);
+                if (result.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool ValidateToken(string authToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -118,12 +149,12 @@ namespace Rathee_Arsenal.Controllers
             return View();
         }
 
-        public async Task<string> GetToken(Order order)
+        public async Task<string> GetToken(string userName, string password)
         {
             LoginVM loginVm = new LoginVM
             {
-                UserName = "abc@xyz",// order.Email;
-                Password = "123456"//order.Password;
+                UserName =userName,
+                Password = password
             };
             //LoginController lc=new LoginController(_config,_appDbContext);
             //return lc.Login2(loginVm);

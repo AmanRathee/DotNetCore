@@ -19,22 +19,44 @@ namespace Rathee_Arsenal.Data.Repository
             _shoppingCart = shoppingCart;
         }
 
-        public void CreateOrder(Order order)
+        public void CreateOrder(OrderVM order)
         {
             order.OrderPlacedAt = DateTime.Now;
-            _appDbContext.Orders.Add(order);
+            var useruid = Guid.NewGuid();
+            var createdUser = _appDbContext.Users.Add(new User()
+            {
+                UserUid = useruid,
+                BuyerName = order.BuyerName,
+                Address = order.Address,
+                Email = order.Email,
+                CreationDateTime = DateTime.Now,
+                Password = order.Password
+            });
 
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
             var shoppingCartItems = _shoppingCart.ShoppingCartItems;
             foreach (var item in shoppingCartItems)
             {
-                var orderdetail = new OrderDetail()
+                orderDetails.Add(new OrderDetail()
                 {
                     Amount = item.Number,
                     WeaponId = item.Weapon.WeaponId,
                     Price = item.Weapon.Price,
                     OrderId = order.OrderId
-                };
+                });
             }
+
+
+            _appDbContext.Orders.Add(
+                new Order()
+                {
+                    OrderId = order.OrderId,
+                    Orderdetails = orderDetails,
+                    UserUid = useruid
+                });
+            _appDbContext.SaveChangesAsync();
+
+           
         }
     }
 }

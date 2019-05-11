@@ -5,6 +5,34 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Interfaces\**" />
+    <Compile Remove="Data\Mock\**" />
+    <Compile Remove="ViewModels\**" />
+    <Content Remove="Data\Interfaces\**" />
+    <Content Remove="Data\Mock\**" />
+    <Content Remove="ViewModels\**" />
+    <EmbeddedResource Remove="Data\Interfaces\**" />
+    <EmbeddedResource Remove="Data\Mock\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
+    <None Remove="Data\Interfaces\**" />
+    <None Remove="Data\Mock\**" />
+    <None Remove="ViewModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Model\Category.cs" />
+    <Compile Remove="Data\Model\Order.cs" />
+    <Compile Remove="Data\Model\OrderDetail.cs" />
+    <Compile Remove="Data\Model\ShoppingCart.cs" />
+    <Compile Remove="Data\Model\ShoppingCartItem.cs" />
+    <Compile Remove="Data\Model\Weapon.cs" />
+    <Compile Remove="Data\Repository\CategoryRepository.cs" />
+    <Compile Remove="Data\Repository\OrderRepository.cs" />
+    <Compile Remove="Data\Repository\WeaponRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Repository\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

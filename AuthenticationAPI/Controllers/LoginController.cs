@@ -60,6 +60,8 @@ namespace AuthenticationAPI.Controllers
         }
 
         [AllowAnonymous]
+        [Route("api/create")]
+
         public async Task<bool> CreateUser([FromBody]User user)
         {
             _appDbContext.Users.Add(user);
@@ -67,11 +69,13 @@ namespace AuthenticationAPI.Controllers
             return true;
         }
         [AllowAnonymous]
+        [Route("api/{userUid}")]
         public async Task<User> GetUserAsync(Guid userUid)
         {
             return await _appDbContext.Users.FindAsync(userUid);
         }
         [Authorize]
+        [Route("api/update")]
         public async Task<bool> UpdateUser([FromBody]User user)
         {
             var userFromDB=await _appDbContext.Users.FindAsync(user.UserUid);
@@ -80,6 +84,7 @@ namespace AuthenticationAPI.Controllers
             return true;
         }
         [Authorize]
+        [Route("api/delete")]
         public async Task<bool> DeleteUserAsync(Guid userUid)
         {
             var userFromDB = await _appDbContext.Users.FindAsync(userUid);
